@@ -1,0 +1,93 @@
+#include <iostream>
+#include <vector>
+#include <ctime>
+using namespace std;
+string name;
+string age;
+
+
+class Reservation {
+private:
+    string name;
+    string timeSlot;
+
+public:
+    Reservation(string n, string ts) : name(n), timeSlot(ts) {}
+
+    string getName() const {
+        return name;
+    }
+
+    string getTimeSlot() const {
+        return timeSlot;
+    }
+};
+
+class Restaurant {
+private:
+    vector<string> availableTimeSlots;
+
+public:
+    Restaurant() {
+        for (int i = 10; i <=12; i++) {
+            availableTimeSlots.push_back(to_string(i) + ":00");
+        }
+
+         for (int i = 1; i <=12; i++) {
+            availableTimeSlots.push_back(to_string(i) + ":00");
+        }
+    }
+
+    void displayAvailableTimeSlots() const {
+        cout << "Available Time Slots:" << endl;
+        for (const auto& slot : availableTimeSlots) {
+            cout << slot << endl;
+        }
+    }
+
+    void reserveTimeSlot(const string& timeSlot, const string& name) {
+        for (auto it = availableTimeSlots.begin(); it != availableTimeSlots.end(); ++it) {
+            if (*it == timeSlot) {
+                availableTimeSlots.erase(it);
+                cout << "Reservation at " << timeSlot << " successful." << endl;
+                return;
+            }
+        }
+        cout << "Failed to reserve. The selected time slot is not available." << endl;
+    }
+    
+};
+
+int main() {
+    Restaurant restaurant;
+    cout << "\t\t\t\t\tWelcome to the Restaurant Reservation Portal" << endl;
+
+    while (true) {
+        cout << "\n1. Display Time Slots That Are Available\n2. I Want To Make a Reservation\n3. Exit" << endl;
+        cout << "Enter your choice: ";
+        int choice;
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                restaurant.displayAvailableTimeSlots();
+                break;
+            case 2: {
+                string name, timeSlot;
+                cout << "Enter your Name: ";
+                cin >> name;
+                cout << "Enter preferred time slot (e.g., '12:00'): ";
+                cin >> timeSlot;
+                restaurant.reserveTimeSlot(timeSlot, name);
+                break;
+            }
+            case 3:
+                cout << "Exiting program." << endl;
+                return 0;
+            default:
+                cout << "Invalid choice. Please enter a valid option." << endl;
+        }
+    }
+
+    return 0;
+}
